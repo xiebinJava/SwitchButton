@@ -1,6 +1,7 @@
 package com.xie.brad.myswitchbutton.MyButton;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -70,23 +71,17 @@ public class SwitchButton extends View {
 
     public SwitchButton(Context context, AttributeSet attrs) {
         super(context, attrs, 0);
-        init(context);
+        paint = new Paint();
+        date = new Date();
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SwitchButton);
+        firstState = typedArray.getBoolean(R.styleable.SwitchButton_switch_state, false);
+        isOpen = firstState;
     }
 
     public SwitchButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
-    /**
-     * 获取到图片的Bitmap
-     *
-     * @param context
-     */
-    private void init(Context context) {
-        paint = new Paint();
-        date = new Date();
-        firstState = false;
-    }
 
     //自己确定大小~  截图量了一下 算上阴影宽高比例是 149:92 。即 height = width * 0.65 左右
     @Override
@@ -129,7 +124,11 @@ public class SwitchButton extends View {
         bStrokWidth = 2 * (halfHeightOfS - bRadius); // 按钮的边框
         sScale = 1 - bStrokWidth / sHeight; //替换之前的0.98<
         sScaleCenterX = sWidth - halfHeightOfS;
-        BTmoveX = bWidth / 2;
+        if (isOpen){
+            BTmoveX = sWidth - bWidth / 2;
+        }else {
+            BTmoveX = bWidth / 2;
+        }
         maxX = sWidth - bWidth;
     }
 

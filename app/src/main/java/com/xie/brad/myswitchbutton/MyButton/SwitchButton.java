@@ -60,6 +60,8 @@ public class SwitchButton extends View {
     private float bStrokWidth;
     private float sScale;
     private float sScaleCenterX;
+    private OnSwitchListener switchListener;
+    private boolean firstState;
 
     public SwitchButton(Context context) {
         super(context, null);
@@ -83,6 +85,7 @@ public class SwitchButton extends View {
     private void init(Context context) {
         paint = new Paint();
         date = new Date();
+        firstState = false;
     }
 
     //自己确定大小~  截图量了一下 算上阴影宽高比例是 149:92 。即 height = width * 0.65 左右
@@ -100,8 +103,8 @@ public class SwitchButton extends View {
     }
 
 
-
-    @Override protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         mWidth = w; // 视图自身宽度
         mHeight = h; // 视图自身高度
@@ -118,7 +121,6 @@ public class SwitchButton extends View {
         sRectF.right = sRight;
         sPath.arcTo(sRectF, 270, 180);
         sPath.close();    // path准备田径场的路径
-
         bLeft = bTop = 0;
         bRight = bBottom = sBottom; // 和田径场同高，同宽的节奏， 没错包裹圆形的肯定是个正方形是小孩子都知道的。
         bWidth = bRight - bLeft;
@@ -132,15 +134,14 @@ public class SwitchButton extends View {
     }
 
 
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.FILL);
-        if (isOpen){
+        if (isOpen) {
             paint.setColor(getResources().getColor(R.color.colorPrimary));
-        }else {
+        } else {
             paint.setColor(0xffcccccc);
         }
         canvas.drawPath(sPath, paint); // 画出田径场
@@ -159,29 +160,30 @@ public class SwitchButton extends View {
             case MotionEvent.ACTION_DOWN:
                 downX = event.getX();
                 downTime = date.getTime();
+                firstState = isOpen;
                 break;
             case MotionEvent.ACTION_MOVE:
                 moveX = event.getX();
                 dx = moveX - downX;
                 if (!isOpen) {
                     if (dx < 0) {
-                        BTmoveX =  bWidth / 2;
+                        BTmoveX = bWidth / 2;
                         isOpen = false;
                     } else if (dx > maxX) {
-                        BTmoveX = maxX+ (bWidth / 2);
+                        BTmoveX = maxX + (bWidth / 2);
                         isOpen = true;
                     } else {
-                        BTmoveX = dx+(bWidth / 2);
+                        BTmoveX = dx + (bWidth / 2);
                     }
                 } else {
                     if (dx > 0) {
-                        BTmoveX = maxX+ bWidth / 2;
+                        BTmoveX = maxX + bWidth / 2;
                         isOpen = true;
                     } else if (Math.abs(dx) > maxX) {
-                        BTmoveX =  bWidth / 2;
+                        BTmoveX = bWidth / 2;
                         isOpen = false;
                     } else {
-                        BTmoveX = maxX-Math.abs(dx)+(bWidth / 2);
+                        BTmoveX = maxX - Math.abs(dx) + (bWidth / 2);
                     }
                 }
                 invalidate();
@@ -191,28 +193,45 @@ public class SwitchButton extends View {
                 if (Math.abs(dx) < 3 && upTime - downTime < 1000) {
                     if (isOpen) {
                         isOpen = false;
-                        BTmoveX =  bWidth / 2;
+                        BTmoveX = bWidth / 2;
+                        firstState = false;
+                        switchListener.closebutton();
                     } else {
                         isOpen = true;
-                        BTmoveX = maxX+bWidth / 2;
+                        BTmoveX = maxX + bWidth / 2;
+                        firstState = true;
+                        switchListener.openbutton();
                     }
                 } else {
                     if (!isOpen) {
                         if (dx < maxX / 2) {
-                            BTmoveX =  bWidth / 2;
+                            BTmoveX = bWidth / 2;
                             isOpen = false;
                         } else {
-                            BTmoveX = maxX+bWidth / 2;
+                            BTmoveX = maxX + bWidth / 2;
                             isOpen = true;
+                            firstState = true;
+                            switchListener.openbutton();
                         }
-                    }else {
-                        if (Math.abs(dx) < maxX / 2|| dx>maxX/2 ) {
-                            BTmoveX = maxX+bWidth / 2;
+                    } else {
+                        if (Math.abs(dx) < maxX / 2 || dx > maxX / 2) {
+                            BTmoveX = maxX + bWidth / 2;
                             isOpen = true;
                         } else {
-                            BTmoveX =  bWidth / 2;
+                            BTmoveX = bWidth / 2;
                             isOpen = false;
+                            firstState = false;
+                            switchListener.closebutton();
                         }
+                    }
+                }
+                if (firstState){
+                    if (!isOpen){
+                        switchListener.closebutton();
+                    }
+                }else {
+                    if (isOpen){
+                        switchListener.openbutton();
                     }
                 }
                 invalidate();
@@ -221,6 +240,16 @@ public class SwitchButton extends View {
         return true;
     }
 
+
+    public void setOnSwitchListener(OnSwitchListener onSwitchListener) {
+        this.switchListener = onSwitchListener;
+    }
+
+    public interface OnSwitchListener {
+        void openbutton();
+
+        void closebutton();
+    }
 
 
 }

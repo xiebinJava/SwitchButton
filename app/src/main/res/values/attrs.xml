@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="SwitchButton">            // 声名属性集的名称，即这些属性是属于哪个控件的。
-        <attr name="switch_state" format="boolean"/>   // 声名属性 current_state 格式为 boolean 类型
-        <!--<attr name="slide_button" format="reference"/>   // 声名属性 slide_button格式为 reference 类型-->
+    <declare-styleable name="SwitchButton">
+        <attr name="switch_state" format="boolean"/>
     </declare-styleable>
 
 </resources>

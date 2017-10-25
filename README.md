@@ -50,3 +50,7 @@
                   Toast.makeText(this,"关",Toast.LENGTH_SHORT).show();
               }
           }
+
+
+   4:如何调整控件的高度？
+   ![Aaron Swartz]()

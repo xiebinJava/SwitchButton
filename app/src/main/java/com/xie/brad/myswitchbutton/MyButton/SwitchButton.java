@@ -2,7 +2,6 @@ package com.xie.brad.myswitchbutton.MyButton;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -22,12 +21,6 @@ import java.util.Date;
 public class SwitchButton extends View {
 
 
-    private Bitmap switchButton;
-    private Bitmap switchCloseBG;
-    private Bitmap switchOpenBG;
-    private int bgWitch;
-    private int buttonWitch;
-    private int height;
     private Paint paint;
     private float downX;
     private float moveX;
@@ -35,12 +28,9 @@ public class SwitchButton extends View {
     private float dx;
     private float maxX;
     private boolean isOpen;
-    private float paintWith;
     private Date date;
     private long downTime;
     private long upTime;
-    private int widthMeasureSpec;
-    private int heightMeasureSpec;
     private int mWidth;
     private int mHeight;
     private int sRight;
@@ -83,7 +73,7 @@ public class SwitchButton extends View {
     }
 
 
-    //自己确定大小~  截图量了一下 算上阴影宽高比例是 149:92 。即 height = width * 0.65 左右
+    // height = width * 0.65 左右
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);

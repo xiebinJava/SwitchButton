@@ -53,4 +53,6 @@
 
 
    4:如何调整控件的高度？
-   ![Aaron Swartz]()
+   
+   
+   ![Aaron Swartz](https://github.com/xiebinJava/SwitchButton/blob/master/switchbt_hight.png?raw=true)

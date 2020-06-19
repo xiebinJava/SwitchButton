@@ -12,6 +12,7 @@ public class MainActivity extends AppCompatActivity implements SwitchButton.OnSw
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         SwitchButton switchButton = (SwitchButton) findViewById(R.id.switchbutton);
         switchButton.setOnSwitchListener(this);
     }

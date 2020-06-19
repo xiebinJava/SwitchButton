@@ -2,12 +2,9 @@
 
 仿IOS风格的开关，简洁易懂，只有一个类文件。
 
+先看下效果
 
-
-
-
-
-
+![Aaron Swartz](https://github.com/xiebinJava/SwitchButton/blob/master/866F34E065627C53C7BBD85EFA18C5CD.gif?raw=true)
 
 
 
